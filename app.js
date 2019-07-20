@@ -1,6 +1,11 @@
 function onReady(){
+  let storageThings = localStorage.getItem('toDoStorage');
+  let toDos = [];
+  if (storageThings != null) {
+    let toDos = JSON.parse(storageThings);
+  }
+
   let id = 0;
-  const toDos = [];
   const addToDoForm = document.getElementById('addToDoForm');
 
   function createNewToDo() {
@@ -21,24 +26,33 @@ function onReady(){
   }
 
   function renderTheUI() {
-    const toDoList = document.getElementById('toDoList');
+    let toDoList = document.getElementById('toDoList');
 
     toDoList.textContent = '';
 
     toDos.forEach(function(toDo) {
       const newLi = document.createElement('li');
-      const checkbox = document.createElement('input');
+      let checkbox = document.createElement('input');
       checkbox.type = "checkbox";
 
-      const deleteBtn = document.CreateElement('button');
+      checkbox.addEventListener('change', function() {
+        if(this.checked) {
+          toDo.complete = true;
+        } else {
+          toDo.complete = false;
+        }
+        localStorage.setItem('toDoStorage', JSON.stringify(toDos));
+      })
+
+      let deleteBtn = document.createElement('button');
       deleteBtn.textContent = "Delete";
 
       deleteBtn.addEventListener('click', event => {
          toDos = toDos.filter(function(item) {
            return item.id != toDo.id;
          })
-         
-        renderTheUI();
+         localStorage.setItem('toDoStorage', JSON.stringify(toDos));
+         renderTheUI();
       });
 
       newLi.textContent = toDo.title;
@@ -51,6 +65,7 @@ function onReady(){
   addToDoForm.addEventListener('submit', event => {
     event.preventDefault();
     createNewToDo();
+    localStorage.setItem('toDoStorage', JSON.stringify(toDos));
   });
   renderTheUI();
 }
