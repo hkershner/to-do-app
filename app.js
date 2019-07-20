@@ -1,11 +1,15 @@
 function onReady(){
   let storageThings = localStorage.getItem('toDoStorage');
   let toDos = [];
+  let id = 0;
   if (storageThings != null) {
     toDos = JSON.parse(storageThings);
+    for (var i = 0; i < toDos.length ; i++) {
+      if (toDos[i].id > id) {
+        id = toDos[i].id;
+      }
+    }
   }
-
-  let id = 0;
   const addToDoForm = document.getElementById('addToDoForm');
 
   function createNewToDo() {
@@ -15,7 +19,7 @@ function onReady(){
     toDos.push({
       title: newToDoText.value,
       complete: false,
-      id: id
+      id: ++id
     });
 
     id++;
