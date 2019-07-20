@@ -2,7 +2,7 @@ function onReady(){
   let storageThings = localStorage.getItem('toDoStorage');
   let toDos = [];
   if (storageThings != null) {
-    let toDos = JSON.parse(storageThings);
+    toDos = JSON.parse(storageThings);
   }
 
   let id = 0;
@@ -34,6 +34,7 @@ function onReady(){
       const newLi = document.createElement('li');
       let checkbox = document.createElement('input');
       checkbox.type = "checkbox";
+      checkbox.checked = toDo.complete;
 
       checkbox.addEventListener('change', function() {
         if(this.checked) {
